@@ -11,6 +11,6 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="disabled_button">#DEC4FF</color>
-    <color name="enabled_button">#BB86FC</color>
+    <color name="enabled_button">#9946FF</color>
 
 </resources>
