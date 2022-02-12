@@ -6,20 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.LEFT
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
 import com.example.shoppinglist.domain.ShopItem
 import java.lang.RuntimeException
 
-class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(){
+open class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(){
     var shopList = listOf<ShopItem>()
     set(value) {
         field = value
         notifyDataSetChanged()
     }
-
     var count : Int = 0
     var onShopItemLongClickListener : ((ShopItem) -> Unit)? = null
+    var onShopItemClickListener : ((ShopItem) -> Unit)? = null
 
     companion object {
         const val  VIEW_TYPE_ENABLED : Int = 1
@@ -52,14 +54,15 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
 
     override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
         val shopItem = shopList[position]
-
         holder.tvName.text = shopItem.name
         holder.tvCount.text = shopItem.count.toString()
         holder.view.setOnLongClickListener {
             onShopItemLongClickListener?.invoke(shopItem)
             true
         }
-
+        holder.view.setOnClickListener {
+            onShopItemClickListener?.invoke(shopItem)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {

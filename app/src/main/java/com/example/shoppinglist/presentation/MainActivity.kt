@@ -2,10 +2,10 @@ package com.example.shoppinglist.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
-import com.example.shoppinglist.domain.ShopItem
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.shopList.observe(this){
             shopListAdapter.shopList = it
         }
+
     }
 
     private fun setupRecyclerView(){
@@ -36,8 +37,13 @@ class MainActivity : AppCompatActivity() {
                 ShopListAdapter.MAX_POOL_SIZE)
         }
         shopListAdapter.onShopItemLongClickListener = {
-                viewModel.changeEnableState(it)
-            }
+            viewModel.changeEnableState(it)
+        }
+        shopListAdapter.onShopItemClickListener = {
+            Log.d("MainActivityTest", "You clicked at item: ${it.id}")
+        }
 
     }
+
+
 }
