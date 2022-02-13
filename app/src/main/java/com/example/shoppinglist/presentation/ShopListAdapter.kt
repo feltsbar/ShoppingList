@@ -23,6 +23,13 @@ open class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHo
     var onShopItemLongClickListener : ((ShopItem) -> Unit)? = null
     var onShopItemClickListener : ((ShopItem) -> Unit)? = null
 
+
+    class ShopItemViewHolder(val view : View) : RecyclerView.ViewHolder(view){
+        val tvName = view.findViewById<TextView>(R.id.tv_name)
+        val tvCount = view.findViewById<TextView>(R.id.tv_count)
+    }
+
+
     companion object {
         const val  VIEW_TYPE_ENABLED : Int = 1
         const val  VIEW_TYPE_DISABLED : Int = 0
@@ -33,10 +40,6 @@ open class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHo
         fun onShopItemLongClick(shopItem: ShopItem)
     }
 
-    class ShopItemViewHolder(val view : View) : RecyclerView.ViewHolder(view){
-        val tvName = view.findViewById<TextView>(R.id.tv_name)
-        val tvCount = view.findViewById<TextView>(R.id.tv_count)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
 
@@ -63,6 +66,8 @@ open class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHo
         holder.view.setOnClickListener {
             onShopItemClickListener?.invoke(shopItem)
         }
+
+
     }
 
     override fun getItemViewType(position: Int): Int {
