@@ -3,4 +3,7 @@
     <string name="fab_content_desc">Add new shop item</string>
     <string name="some_text_for_text_view">Some product</string>
     <string name="some_number_for_text_view">1</string>
+    <string name="name">Name:</string>
+    <string name="count">Count:</string>
+    <string name="save">Save</string>
 </resources>
