@@ -6,6 +6,8 @@
     <string name="name">Name:</string>
     <string name="count">Count:</string>
     <string name="save">Save</string>
+    <string name="error_input_count">Invalid count</string>
+    <string name="error_input_name">Invalid name</string>
     <string name="til_field_empty_error">Field must not be empty</string>
     <string name="til_field_value_less_than_zero">The entered value must be greater than zero</string>
     <string name="toast_fill_all_fields">Fill all fields!</string>

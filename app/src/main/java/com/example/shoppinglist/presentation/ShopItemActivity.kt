@@ -36,66 +36,71 @@ class ShopItemActivity : AppCompatActivity() {
         parseIntent()
         viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
         initViews()
+        addTextChangeListeners()
+        launchRightMode()
+        observeViewModel()
+    }
+
+    private fun observeViewModel(){
+        viewModel.errorInputCount.observe(this){
+            val message = if (it) {
+                getString(R.string.error_input_count)
+            } else { null }
+            tilCount.error = message
+        }
+        viewModel.errorInputName.observe(this){
+            val message = if (it) {
+                getString(R.string.error_input_name)
+            } else { null }
+            tilName.error = message
+        }
+        viewModel.shouldCloseScreen.observe(this){
+            finish()
+        }
+    }
+
+    private fun launchRightMode(){
         when(screenMode){
             MODE_EDIT -> launchEditMode()
             MODE_ADD -> launchAddMode()
         }
     }
 
+    private fun addTextChangeListeners(){
+        etName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.resetErrorInputName()
+            }
+
+            override fun afterTextChanged(p0: Editable?) { }
+        })
+        etCount.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.resetErrorInputCount()
+            }
+
+            override fun afterTextChanged(p0: Editable?) { }
+        })
+    }
+
     private fun launchEditMode(){
-        // TODO: just do it
+        viewModel.getShopItem(shopItemId)
+        viewModel.shopItemLiveData.observe(this){
+            etName.setText(it.name)
+            etCount.setText(it.count.toString())
+        }
+        buttonSave.setOnClickListener {
+            viewModel.editShopItem(etName.text?.toString(), etCount.text?.toString())
+        }
     }
 
     private fun launchAddMode(){
-        etName.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                tilName.error = null
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                tilName.error = null
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                if (etName.text.isBlank()){
-                    tilName.error = getString(R.string.til_field_empty_error)
-                }
-            }
-        })
-
-        etCount.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                tilCount.error = null
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                tilCount.error = null
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                if (p0.toString().isBlank()){
-                    tilCount.error = getString(R.string.til_field_empty_error)
-                }
-//                if (etCount.toString().toInt() < 0 ){
-//                    tilCount.error = getString(R.string.til_field_value_less_than_zero)
-//                }
-            }
-        })
-
-        val name : String = etName.toString()
-        val count : String = etCount.toString()
-
         buttonSave.setOnClickListener {
-            if (etName.toString().isNotBlank() && etCount.toString().isNotBlank() &&
-            tilName.error == null && tilCount.error == null){
-                viewModel.addShopItem(name, count)
-//                val intent = Intent(this, MainActivity::class.java)
-//                startActivity(intent)
-                //TODO: Check ShopItemViewModel.addShopItem() with debug. IS it work successful ?
-            } else {
-                Toast.makeText(this,
-                    getString(R.string.toast_fill_all_fields), Toast.LENGTH_SHORT).show()
-            }
+            viewModel.addShopItem(etName.text?.toString(), etCount.text?.toString())
         }
     }
 

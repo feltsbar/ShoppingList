@@ -8,7 +8,9 @@ import com.example.shoppinglist.domain.*
 import java.lang.Exception
 
 class ShopItemViewModel : ViewModel() {
+    // TODO: rewrite link to Data layer!
     private val repository = ShopListRepositoryImpl
+
     private val getShopItemUseCase = GetShopItemUseCase(repository)
     private val addShopItemUseCase = AddShopItemUseCase(repository)
     private val editShopItemUseCase = EditShopItemUseCase(repository)
@@ -40,11 +42,9 @@ class ShopItemViewModel : ViewModel() {
         val count = parseCount(inputCount)
         val fieldsValid = validateInput(name,count)
         if (fieldsValid) {
-            _shopItemMLD.value?.let {
-                val shopItem = ShopItem(name, count, true)
-                addShopItemUseCase.addShopItemItem(shopItem)
-                finishWork()
-            }
+            val shopItem = ShopItem(name, count, true)
+            addShopItemUseCase.addShopItemItem(shopItem)
+            finishWork()
         }
     }
 

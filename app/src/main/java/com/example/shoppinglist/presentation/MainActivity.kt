@@ -1,9 +1,7 @@
 package com.example.shoppinglist.presentation
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -77,7 +75,6 @@ class MainActivity : AppCompatActivity() {
         shopListAdapter.onShopItemClickListener = {
             val intent = newIntentEditItem(this, it.id)
             startActivity(intent)
-            //Log.d("MainActivityTest", "You clicked at item: ${it.id}")
         }
     }
 
