@@ -2,6 +2,7 @@ package com.example.shoppinglist.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
@@ -12,7 +13,7 @@ import com.example.shoppinglist.presentation.ShopItemActivity.Companion.newInten
 import com.example.shoppinglist.presentation.ShopItemActivity.Companion.newIntentEditItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var shopListAdapter: ShopListAdapter
@@ -37,8 +38,12 @@ class MainActivity : AppCompatActivity() {
             } else {
                 launchFragment(ShopItemFragment.newInstanceAddItem())
             }
-
         }
+    }
+
+    override fun onEditingFinished() {
+        Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_SHORT).show()
+        supportFragmentManager.popBackStack()
     }
 
     private fun isOnePaneMode(): Boolean {
@@ -87,7 +92,6 @@ class MainActivity : AppCompatActivity() {
                 viewModel.deleteShopItem(item)
             }
         }
-
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(rvShopList)
     }
@@ -100,7 +104,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 launchFragment(ShopItemFragment.newInstanceEditItem(it.id))
             }
-
         }
     }
 
@@ -109,6 +112,5 @@ class MainActivity : AppCompatActivity() {
             viewModel.changeEnableState(it)
         }
     }
-
 
 }
