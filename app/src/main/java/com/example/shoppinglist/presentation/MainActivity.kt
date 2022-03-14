@@ -29,8 +29,8 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListen
         viewModel.shopList.observe(this){
             shopListAdapter.submitList(it)
         }
-
         val buttonAddShopItem = findViewById<FloatingActionButton>(R.id.button_add_shop_item)
+
         buttonAddShopItem.setOnClickListener {
             if (isOnePaneMode()){
                 val intent = newIntentAddItem(this)
