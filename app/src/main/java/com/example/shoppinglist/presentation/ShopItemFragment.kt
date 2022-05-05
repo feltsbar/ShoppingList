@@ -12,14 +12,26 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.shoppinglist.R
+import com.example.shoppinglist.databinding.FragmentShopItemBinding
 import com.example.shoppinglist.domain.ShopItem
 import com.google.android.material.textfield.TextInputLayout
 import java.lang.RuntimeException
 
 class ShopItemFragment: Fragment() {
+
+    private var _binding : FragmentShopItemBinding? = null
+    private val binding :FragmentShopItemBinding
+        get() = _binding ?: throw RuntimeException("FragmentShopItemBinding == null")
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            defaultViewModelProviderFactory
+        ) [ShopItemViewModel::class.java]
+    }
+
     private lateinit var onEditingFinishListener : OnEditingFinishListener
 
-    private lateinit var viewModel: ShopItemViewModel
     private lateinit var tilName : TextInputLayout
     private lateinit var tilCount : TextInputLayout
     private lateinit var etName : EditText
@@ -47,19 +59,29 @@ class ShopItemFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_shop_item, container, false)
+    ): View {
+        _binding = FragmentShopItemBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
+        binding.viewModel = viewModel
+
         initViews(view)
         addTextChangeListeners()
         launchRightMode()
         observeViewModel()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
+
 
     private fun observeViewModel(){
         viewModel.errorInputCount.observe(viewLifecycleOwner){

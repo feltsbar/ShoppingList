@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import com.example.shoppinglist.R
 import com.example.shoppinglist.domain.ShopItem
+import kotlinx.coroutines.launch
 import java.lang.RuntimeException
 
 class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListener {
